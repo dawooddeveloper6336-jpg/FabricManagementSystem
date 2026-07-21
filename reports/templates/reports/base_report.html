@@ -1,0 +1,93 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}{{ report_type }} Reports | Fabric Management{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/reports.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="text-white">{{ report_type }} Reports</h4>
+    <div>
+        <button class="btn btn-outline-light me-2" onclick="window.print();">
+            <i class="bi bi-printer"></i> Print
+        </button>
+        <button class="btn btn-outline-success" id="exportCsv">
+            <i class="bi bi-file-earmark-excel"></i> Export CSV
+        </button>
+    </div>
+</div>
+
+<!-- Filter Form -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            {{ form.as_p }}
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-outline-light w-100">
+                    <i class="bi bi-filter me-1"></i> Apply Filters
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Results Table -->
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="reportTable">
+                <thead>
+                    <tr>
+                        {% block table_headers %}{% endblock %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% block table_body %}{% endblock %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% if is_paginated %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        <!-- pagination tags -->
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/reports.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Export CSV function
+        document.getElementById('exportCsv').addEventListener('click', function() {
+            const table = document.getElementById('reportTable');
+            if (!table) return;
+            let csv = [];
+            const rows = table.querySelectorAll('tr');
+            for (let row of rows) {
+                const cols = row.querySelectorAll('th, td');
+                let rowData = [];
+                for (let col of cols) {
+                    rowData.push(col.innerText.trim());
+                }
+                csv.push(rowData.join(','));
+            }
+            const csvContent = csv.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '{{ report_type|lower }}_report.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    });
+</script>
+{% endblock %}

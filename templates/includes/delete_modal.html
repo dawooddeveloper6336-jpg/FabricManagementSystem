@@ -1,0 +1,22 @@
+﻿<!-- Delete Confirmation Modal (Reusable) -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h5 class="modal-title text-white" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-white">
+                Are you sure you want to delete <strong id="deleteName"></strong>?
+                <br><small class="text-danger">This action cannot be undone.</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="pointer-events: auto;">Cancel</button>
+                <form id="deleteForm" method="post" action="" style="pointer-events: auto;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" style="pointer-events: auto;">Yes, Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

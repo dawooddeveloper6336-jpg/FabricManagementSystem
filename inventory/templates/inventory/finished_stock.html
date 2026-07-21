@@ -1,0 +1,186 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Finished Stock | Fabric Management{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/finished_stock.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="text-white">Finished Stock</h4>
+    <div>
+        <button class="btn btn-outline-light me-2" onclick="window.location.reload();">
+            <i class="bi bi-arrow-clockwise"></i> Refresh
+        </button>
+        <button class="btn btn-outline-light me-2" onclick="window.print();">
+            <i class="bi bi-printer"></i> Print
+        </button>
+        <button class="btn btn-outline-success" id="exportExcel">
+            <i class="bi bi-file-earmark-excel"></i> Export Excel
+        </button>
+    </div>
+</div>
+
+<!-- Search & Filters -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label text-light">Search</label>
+                <input type="text" name="search" class="form-control" placeholder="Fabric Code, Name, Manufacturer, Color..." value="{{ search }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label text-light">Fabric</label>
+                <select name="fabric" class="form-select">
+                    <option value="">All</option>
+                    {% for f in fabrics %}
+                        <option value="{{ f.id }}" {% if fabric_filter|add:0 == f.id %}selected{% endif %}>{{ f.fabric_code }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label text-light">Manufacturer</label>
+                <select name="manufacturer" class="form-select">
+                    <option value="">All</option>
+                    {% for m in manufacturers %}
+                        <option value="{{ m.id }}" {% if manufacturer_filter|add:0 == m.id %}selected{% endif %}>{{ m.manufacturer_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label text-light">Color</label>
+                <input type="text" name="color" class="form-control" placeholder="Color" value="{{ color_filter }}">
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-outline-light w-100">
+                    <i class="bi bi-search me-1"></i> Apply Filters
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="stockTable">
+                <thead>
+                    <tr>
+                        <th>Fabric Code</th>
+                        <th>Fabric Name</th>
+                        <th>Manufacturer</th>
+                        <th>Color</th>
+                        <th>Grade</th>
+                        <th>Current Stock</th>
+                        <th>Reserved Stock</th>
+                        <th>Available Stock</th>
+                        <th>Unit</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stock in stocks %}
+                        <!-- Grade A -->
+                        <tr>
+                            <td>{{ stock.fabric.fabric_code }}</td>
+                            <td>{{ stock.fabric.fabric_blend }}</td>
+                            <td>{{ stock.manufacturer.manufacturer_name }}</td>
+                            <td>{{ stock.color }}</td>
+                            <td><span class="badge bg-primary">Grade A</span></td>
+                            <td>{{ stock.grade_a }}</td>
+                            <td>{{ stock.reserved }}</td>
+                            <td>{{ stock.available_stock }}</td>
+                            <td>{{ stock.fabric.get_unit_display }}</td>
+                            <td>{{ stock.last_updated|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                        <!-- Grade B -->
+                        <tr>
+                            <td>{{ stock.fabric.fabric_code }}</td>
+                            <td>{{ stock.fabric.fabric_blend }}</td>
+                            <td>{{ stock.manufacturer.manufacturer_name }}</td>
+                            <td>{{ stock.color }}</td>
+                            <td><span class="badge bg-warning text-dark">Grade B</span></td>
+                            <td>{{ stock.grade_b }}</td>
+                            <td>{{ stock.reserved }}</td>
+                            <td>{{ stock.grade_b|add:"-"|add:stock.reserved }}</td>
+                            <td>{{ stock.fabric.get_unit_display }}</td>
+                            <td>{{ stock.last_updated|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                        <!-- CP -->
+                        <tr>
+                            <td>{{ stock.fabric.fabric_code }}</td>
+                            <td>{{ stock.fabric.fabric_blend }}</td>
+                            <td>{{ stock.manufacturer.manufacturer_name }}</td>
+                            <td>{{ stock.color }}</td>
+                            <td><span class="badge bg-secondary">CP</span></td>
+                            <td>{{ stock.cp }}</td>
+                            <td>{{ stock.reserved }}</td>
+                            <td>{{ stock.cp|add:"-"|add:stock.reserved }}</td>
+                            <td>{{ stock.fabric.get_unit_display }}</td>
+                            <td>{{ stock.last_updated|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="10" class="text-center text-muted py-4">No stock records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Pagination -->
+{% if is_paginated %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1{% if search %}&search={{ search }}{% endif %}{% if fabric_filter %}&fabric={{ fabric_filter }}{% endif %}{% if manufacturer_filter %}&manufacturer={{ manufacturer_filter }}{% endif %}{% if color_filter %}&color={{ color_filter }}{% endif %}">&laquo; First</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search %}&search={{ search }}{% endif %}{% if fabric_filter %}&fabric={{ fabric_filter }}{% endif %}{% if manufacturer_filter %}&manufacturer={{ manufacturer_filter }}{% endif %}{% if color_filter %}&color={{ color_filter }}{% endif %}">Previous</a></li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search %}&search={{ search }}{% endif %}{% if fabric_filter %}&fabric={{ fabric_filter }}{% endif %}{% if manufacturer_filter %}&manufacturer={{ manufacturer_filter }}{% endif %}{% if color_filter %}&color={{ color_filter }}{% endif %}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if search %}&search={{ search }}{% endif %}{% if fabric_filter %}&fabric={{ fabric_filter }}{% endif %}{% if manufacturer_filter %}&manufacturer={{ manufacturer_filter }}{% endif %}{% if color_filter %}&color={{ color_filter }}{% endif %}">Last &raquo;</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/finished_stock.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const exportBtn = document.getElementById('exportExcel');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', function() {
+                const table = document.getElementById('stockTable');
+                if (!table) return;
+                let csv = [];
+                const rows = table.querySelectorAll('tr');
+                for (let row of rows) {
+                    const cols = row.querySelectorAll('th, td');
+                    let rowData = [];
+                    for (let col of cols) {
+                        let text = col.innerText.trim();
+                        rowData.push(text);
+                    }
+                    csv.push(rowData.join(','));
+                }
+                const csvContent = csv.join('\n');
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'finished_stock.csv';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+    });
+</script>
+{% endblock %}

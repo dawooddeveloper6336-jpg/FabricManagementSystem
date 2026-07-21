@@ -1,0 +1,100 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Greige Stock | Fabric Management{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="text-white">Greige Stock</h4>
+    <div>
+        <button class="btn btn-outline-light me-2" onclick="window.location.reload();">
+            <i class="bi bi-arrow-clockwise"></i> Refresh
+        </button>
+        <button class="btn btn-outline-light me-2" onclick="window.print();">
+            <i class="bi bi-printer"></i> Print
+        </button>
+        <button class="btn btn-outline-success" id="exportExcel">
+            <i class="bi bi-file-earmark-excel"></i> Export Excel
+        </button>
+    </div>
+</div>
+
+<!-- Search -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-center">
+            <div class="col-md-10">
+                <input type="text" name="search" class="form-control" placeholder="Search by Fabric Code, Fabric Name or Manufacturer..." value="{{ search }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-outline-light w-100">
+                    <i class="bi bi-search me-1"></i> Search
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="stockTable">
+                <thead>
+                    <tr>
+                        <th>Fabric Code</th>
+                        <th>Fabric Name</th>
+                        <th>Manufacturer</th>
+                        <th>Current Stock</th>
+                        <th>Reserved Stock</th>
+                        <th>Available Stock</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stock in stocks %}
+                    <tr>
+                        <td><span class="badge bg-primary">{{ stock.fabric.fabric_code }}</span></td>
+                        <td>{{ stock.fabric.fabric_blend }}</td>
+                        <td>{{ stock.manufacturer.manufacturer_name }}</td>
+                        <td>{{ stock.current_stock }}</td>
+                        <td>{{ stock.reserved_stock }}</td>
+                        <td>
+                            <span class="badge bg-{% if stock.available_stock > 0 %}success{% else %}danger{% endif %}">
+                                {{ stock.available_stock }}
+                            </span>
+                        </td>
+                        <td>{{ stock.last_updated|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">No stock records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Pagination -->
+{% if is_paginated %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1{% if search %}&search={{ search }}{% endif %}">&laquo; First</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search %}&search={{ search }}{% endif %}">Previous</a></li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search %}&search={{ search }}{% endif %}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if search %}&search={{ search }}{% endif %}">Last &raquo;</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/greige_stock.js' %}"></script>
+{% endblock %}

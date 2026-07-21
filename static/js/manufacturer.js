@@ -1,0 +1,1 @@
+// Any custom JS for manufacturer module (delete modal already in template)

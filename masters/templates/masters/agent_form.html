@@ -1,0 +1,32 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Agent Form | Fabric Management{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="text-white">{% if form.instance.pk %}Edit Agent{% else %}Add Agent{% endif %}</h4>
+    <a href="{% url 'masters:agent_list' %}" class="btn btn-outline-light">
+        <i class="bi bi-arrow-left me-1"></i> Back
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-1"></i> Save
+                </button>
+                <button type="reset" class="btn btn-secondary">
+                    <i class="bi bi-arrow-counterclockwise me-1"></i> Clear
+                </button>
+                <a href="{% url 'masters:agent_list' %}" class="btn btn-outline-light">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

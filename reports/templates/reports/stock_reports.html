@@ -1,0 +1,43 @@
+{% extends 'reports/base_report.html' %}
+
+{% block table_headers %}
+    <th>Fabric Code</th>
+    <th>Fabric Name</th>
+    <th>Manufacturer</th>
+    {% if stock_type == 'finished' %}
+        <th>Color</th>
+        <th>Grade A</th>
+        <th>Grade B</th>
+        <th>CP</th>
+        <th>Available</th>
+    {% else %}
+        <th>Current Stock</th>
+        <th>Reserved</th>
+        <th>Available</th>
+    {% endif %}
+    <th>Last Updated</th>
+{% endblock %}
+
+{% block table_body %}
+    {% for item in data %}
+    <tr>
+        <td>{{ item.fabric.fabric_code }}</td>
+        <td>{{ item.fabric.fabric_blend }}</td>
+        <td>{{ item.manufacturer.manufacturer_name }}</td>
+        {% if stock_type == 'finished' %}
+            <td>{{ item.color }}</td>
+            <td>{{ item.grade_a }}</td>
+            <td>{{ item.grade_b }}</td>
+            <td>{{ item.cp }}</td>
+            <td>{{ item.available_stock }}</td>
+        {% else %}
+            <td>{{ item.current_stock|default:item.quantity }}</td>
+            <td>{{ item.reserved_stock|default:0 }}</td>
+            <td>{{ item.available_stock|default:0 }}</td>
+        {% endif %}
+        <td>{{ item.last_updated|date:"Y-m-d H:i" }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="10" class="text-center text-muted">No data found.</td></tr>
+    {% endfor %}
+{% endblock %}

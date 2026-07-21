@@ -1,0 +1,25 @@
+{% extends 'reports/base_report.html' %}
+
+{% block table_headers %}
+    <th>Receiving No</th>
+    <th>PO Number</th>
+    <th>Receive Date</th>
+    <th>Manufacturer</th>
+    <th>Received Qty</th>
+    <th>Remarks</th>
+{% endblock %}
+
+{% block table_body %}
+    {% for rec in data %}
+    <tr>
+        <td>{{ rec.receiving_number }}</td>
+        <td>{{ rec.purchase_order.po_number }}</td>
+        <td>{{ rec.receive_date|date:"Y-m-d" }}</td>
+        <td>{{ rec.purchase_order.manufacturer.manufacturer_name }}</td>
+        <td>{{ rec.received_quantity }}</td>
+        <td>{{ rec.remarks|default:"-" }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6" class="text-center text-muted">No data found.</td></tr>
+    {% endfor %}
+{% endblock %}

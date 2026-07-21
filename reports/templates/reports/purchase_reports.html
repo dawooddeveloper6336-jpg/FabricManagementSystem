@@ -1,0 +1,27 @@
+{% extends 'reports/base_report.html' %}
+
+{% block table_headers %}
+    <th>PO Number</th>
+    <th>Date</th>
+    <th>Manufacturer</th>
+    <th>Buying House</th>
+    <th>Fabric</th>
+    <th>Order Qty</th>
+    <th>Status</th>
+{% endblock %}
+
+{% block table_body %}
+    {% for po in data %}
+    <tr>
+        <td>{{ po.po_number }}</td>
+        <td>{{ po.po_date|date:"Y-m-d" }}</td>
+        <td>{{ po.manufacturer.manufacturer_name }}</td>
+        <td>{{ po.buying_house.buying_house_name }}</td>
+        <td>{{ po.fabric.fabric_code }}</td>
+        <td>{{ po.order_quantity }}</td>
+        <td>{{ po.get_status_display }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="7" class="text-center text-muted">No data found.</td></tr>
+    {% endfor %}
+{% endblock %}

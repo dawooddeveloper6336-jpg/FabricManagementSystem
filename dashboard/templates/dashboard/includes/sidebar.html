@@ -1,0 +1,122 @@
+<div class="sidebar" id="sidebarCollapse">
+    <div class="sidebar-brand d-flex align-items-center justify-content-center py-3">
+        <i class="bi bi-box-seam brand-icon me-2"></i>
+        <span class="brand-text">Fabric Management</span>
+    </div>
+    <ul class="nav flex-column">
+        <!-- Dashboard – visible to everyone -->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard:dashboard' %}">
+                <i class="bi bi-speedometer2 me-2"></i> Dashboard
+            </a>
+        </li>
+
+        <!-- Masters -->
+        {% if perms.accounts.can_view_masters %}
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#mastersMenu" role="button" aria-expanded="false" aria-controls="mastersMenu">
+                <i class="bi bi-diagram-3 me-2"></i> Masters <i class="bi bi-chevron-down float-end"></i>
+            </a>
+            <div class="collapse" id="mastersMenu">
+                <ul class="nav flex-column ps-3">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'masters:manufacturer_list' %}"><i class="bi bi-building me-2"></i> Manufacturer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'masters:buying_house_list' %}"><i class="bi bi-house me-2"></i> Buying House</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'masters:agent_list' %}"><i class="bi bi-person-badge me-2"></i> Agent</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'masters:fabric_list' %}"><i class="bi bi-layers me-2"></i> Fabric Master</a></li>
+                </ul>
+            </div>
+        </li>
+        {% endif %}
+
+        <!-- Purchase -->
+        {% if perms.accounts.can_view_purchase %}
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#purchaseMenu" role="button" aria-expanded="false" aria-controls="purchaseMenu">
+                <i class="bi bi-cart-plus me-2"></i> Purchase <i class="bi bi-chevron-down float-end"></i>
+            </a>
+            <div class="collapse" id="purchaseMenu">
+                <ul class="nav flex-column ps-3">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'purchase:po_list' %}"><i class="bi bi-file-earmark-text me-2"></i> Purchase Order</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'purchase:receiving_list' %}"><i class="bi bi-arrow-down-circle me-2"></i> Purchase Receiving</a></li>
+                </ul>
+            </div>
+        </li>
+        {% endif %}
+
+        <!-- Inventory -->
+        {% if perms.accounts.can_view_inventory %}
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#inventoryMenu" role="button" aria-expanded="false" aria-controls="inventoryMenu">
+                <i class="bi bi-box-seam me-2"></i> Inventory <i class="bi bi-chevron-down float-end"></i>
+            </a>
+            <div class="collapse" id="inventoryMenu">
+                <ul class="nav flex-column ps-3">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'inventory:greige_stock' %}"><i class="bi bi-layers me-2"></i> Greige Stock</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'inventory:dispatch_list' %}"><i class="bi bi-truck me-2"></i> Dispatch for Dyeing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'inventory:processing_transit' %}"><i class="bi bi-arrow-left-right me-2"></i> Processing In Transit</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'inventory:processing_receiving_list' %}"><i class="bi bi-check-circle me-2"></i> Processing Receiving</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'inventory:finished_stock' %}"><i class="bi bi-check2-circle me-2"></i> Finished Stock</a></li>
+                </ul>
+            </div>
+        </li>
+        {% endif %}
+
+        <!-- Sales -->
+        {% if perms.accounts.can_view_sales %}
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#salesMenu" role="button" aria-expanded="false" aria-controls="salesMenu">
+                <i class="bi bi-currency-dollar me-2"></i> Sales <i class="bi bi-chevron-down float-end"></i>
+            </a>
+            <div class="collapse" id="salesMenu">
+                <ul class="nav flex-column ps-3">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'sales:invoice_list' %}"><i class="bi bi-file-earmark-text me-2"></i> Sales Invoice</a></li>
+                </ul>
+            </div>
+        </li>
+        {% endif %}
+
+        <!-- Reports -->
+        {% if perms.accounts.can_view_reports %}
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#reportsMenu" role="button" aria-expanded="false" aria-controls="reportsMenu">
+                <i class="bi bi-bar-chart me-2"></i> Reports <i class="bi bi-chevron-down float-end"></i>
+            </a>
+            <div class="collapse" id="reportsMenu">
+                <ul class="nav flex-column ps-3">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'reports:purchase' %}"><i class="bi bi-file-earmark-text me-2"></i> Purchase Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'reports:receiving' %}"><i class="bi bi-arrow-down-circle me-2"></i> Receiving Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'reports:dispatch' %}"><i class="bi bi-truck me-2"></i> Dispatch Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'reports:processing' %}"><i class="bi bi-gear me-2"></i> Processing Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'reports:stock' %}"><i class="bi bi-box-seam me-2"></i> Stock Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'reports:sales' %}"><i class="bi bi-currency-dollar me-2"></i> Sales Reports</a></li>
+                </ul>
+            </div>
+        </li>
+        {% endif %}
+
+        <!-- Users – only if can_manage_users (admin) -->
+        {% if perms.accounts.can_manage_users %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:user_list' %}">
+                <i class="bi bi-people me-2"></i> Users
+            </a>
+        </li>
+        {% endif %}
+
+        <!-- Settings – Admin only -->
+{% if user.is_authenticated and user.role == 'admin' %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'settings:settings' %}">
+        <i class="bi bi-gear me-2"></i> Settings
+    </a>
+</li>
+{% endif %}
+
+        <!-- Logout – everyone -->
+        <li class="nav-item mt-auto">
+            <a class="nav-link text-danger" href="{% url 'accounts:logout' %}">
+                <i class="bi bi-box-arrow-right me-2"></i> Logout
+            </a>
+        </li>
+    </ul>
+</div>

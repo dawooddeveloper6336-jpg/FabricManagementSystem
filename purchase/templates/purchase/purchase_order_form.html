@@ -1,0 +1,166 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Purchase Order Form | Fabric Management{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/purchase.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="text-white">{% if form.instance.pk %}Edit Purchase Order{% else %}New Purchase Order{% endif %}</h4>
+    <a href="{% url 'purchase:po_list' %}" class="btn btn-outline-light">
+        <i class="bi bi-arrow-left me-1"></i> Back
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" id="poForm" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.po_date|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.manufacturer|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.buying_house|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.agent|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.agent_commission|as_crispy_field }}
+                </div>
+            </div>
+
+            <hr>
+            <h5 class="text-white">Fabric Details</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.fabric|as_crispy_field }}
+                </div>
+            </div>
+            <!-- Fabric information preview -->
+            <div id="fabric-details" style="display: none;" class="mt-3 p-3 bg-light rounded">
+                <div class="row text-dark">
+                    <div class="col-md-4"><strong>Fabric Blend:</strong> <span id="fd-blend"></span></div>
+                    <div class="col-md-4"><strong>Quality:</strong> <span id="fd-quality"></span></div>
+                    <div class="col-md-4"><strong>Warp:</strong> <span id="fd-warp"></span></div>
+                    <div class="col-md-4"><strong>Weft:</strong> <span id="fd-weft"></span></div>
+                    <div class="col-md-4"><strong>Ends:</strong> <span id="fd-ends"></span></div>
+                    <div class="col-md-4"><strong>Picks:</strong> <span id="fd-picks"></span></div>
+                    <div class="col-md-4"><strong>Weave:</strong> <span id="fd-weave"></span></div>
+                    <div class="col-md-4"><strong>Width On Loom:</strong> <span id="fd-width-on"></span></div>
+                    <div class="col-md-4"><strong>Width Off Loom:</strong> <span id="fd-width-off"></span></div>
+                    <div class="col-md-4"><strong>Selvedge:</strong> <span id="fd-selvedge"></span></div>
+                    <div class="col-md-4"><strong>Unit:</strong> <span id="fd-unit"></span></div>
+                </div>
+            </div>
+
+            <hr>
+            <h5 class="text-white">Order Details</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    {{ form.order_quantity|as_crispy_field }}
+                </div>
+                <div class="col-md-4">
+                    {{ form.tolerance_percentage|as_crispy_field }}
+                </div>
+                <div class="col-md-4">
+                    {{ form.delivery_date|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    {{ form.remarks|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.status|as_crispy_field }}
+                </div>
+            </div>
+
+            <!-- Revision Reason (appears only when editing, but we always show) -->
+            <div class="row">
+                <div class="col-md-12">
+                    {{ form.revision_reason|as_crispy_field }}
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2 flex-wrap">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-1"></i> Save
+                </button>
+                <button type="submit" name="action" value="submit" class="btn btn-success">
+                    <i class="bi bi-check-circle me-1"></i> Submit
+                </button>
+                <button type="reset" class="btn btn-secondary">
+                    <i class="bi bi-arrow-counterclockwise me-1"></i> Clear
+                </button>
+                <a href="{% url 'purchase:po_list' %}" class="btn btn-outline-light">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/purchase.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fabricSelect = document.getElementById('id_fabric');
+        const fabricDetailsDiv = document.getElementById('fabric-details');
+        const fields = {
+            'blend': 'fd-blend',
+            'quality': 'fd-quality',
+            'warp': 'fd-warp',
+            'weft': 'fd-weft',
+            'ends': 'fd-ends',
+            'picks': 'fd-picks',
+            'weave': 'fd-weave',
+            'width_on': 'fd-width-on',
+            'width_off': 'fd-width-off',
+            'selvedge': 'fd-selvedge',
+            'unit': 'fd-unit'
+        };
+
+        function fetchFabricDetails(fabricId) {
+            if (!fabricId) {
+                fabricDetailsDiv.style.display = 'none';
+                return;
+            }
+            fetch(`{% url 'purchase:fabric_details' %}?fabric_id=${fabricId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.fabric_blend) {
+                        for (let key in fields) {
+                            document.getElementById(fields[key]).textContent = data[key] || '';
+                        }
+                        fabricDetailsDiv.style.display = 'block';
+                    } else {
+                        fabricDetailsDiv.style.display = 'none';
+                    }
+                })
+                .catch(() => fabricDetailsDiv.style.display = 'none');
+        }
+
+        if (fabricSelect.value) {
+            fetchFabricDetails(fabricSelect.value);
+        }
+
+        fabricSelect.addEventListener('change', function() {
+            fetchFabricDetails(this.value);
+        });
+    });
+</script>
+{% endblock %}

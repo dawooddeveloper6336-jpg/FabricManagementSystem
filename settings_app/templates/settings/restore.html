@@ -1,0 +1,33 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Restore Database | Settings{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="text-white">Restore Database</h4>
+    <a href="{% url 'settings:settings' %}" class="btn btn-outline-light">
+        <i class="bi bi-arrow-left me-1"></i> Back to Settings
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong>Warning:</strong> Restoring will overwrite all current data. This action cannot be undone.
+            Please ensure you have a recent backup before proceeding.
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="backup_file" class="form-label text-white">Select Backup File (.json)</label>
+                <input type="file" name="backup_file" id="backup_file" class="form-control" accept=".json" required>
+            </div>
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to restore the database? All current data will be lost.')">
+                <i class="bi bi-arrow-counterclockwise me-1"></i> Restore Database
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

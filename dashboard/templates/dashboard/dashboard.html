@@ -1,0 +1,372 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard | Fabric Management{% endblock %}
+
+{% block content %}
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card card-dashboard">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted">Today's Purchase</h6>
+                            <h2>{{ today_purchase }}</h2>
+                        </div>
+                        <i class="bi bi-cart-plus card-icon" style="color: #6c5ce7;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card card-dashboard">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted">Today's Receiving</h6>
+                            <h2>{{ today_receiving }}</h2>
+                        </div>
+                        <i class="bi bi-arrow-down-circle card-icon" style="color: #2ecc71;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card card-dashboard">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted">Greige Stock</h6>
+                            <h2>{{ greige_stock }}</h2>
+                        </div>
+                        <i class="bi bi-box card-icon" style="color: #f39c12;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card card-dashboard">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted">Processing Stock</h6>
+                            <h2>{{ processing_stock }}</h2>
+                        </div>
+                        <i class="bi bi-gear card-icon" style="color: #3498db;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card card-dashboard">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted">Finished Stock</h6>
+                            <h2>{{ finished_stock }}</h2>
+                        </div>
+                        <i class="bi bi-check-circle card-icon" style="color: #27ae60;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card card-dashboard">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted">Pending Purchase Orders</h6>
+                            <h2>{{ pending_purchase_orders }}</h2>
+                        </div>
+                        <i class="bi bi-clock-history card-icon" style="color: #e74c3c;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card card-dashboard">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted">Pending Dispatch</h6>
+                            <h2>{{ pending_dispatch }}</h2>
+                        </div>
+                        <i class="bi bi-truck card-icon" style="color: #95a5a6;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="card card-dashboard">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted">Today's Sales</h6>
+                            <h2>{{ today_sales }}</h2>
+                        </div>
+                        <i class="bi bi-currency-dollar card-icon" style="color: #3498db;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-4 col-md-6">
+            <div class="card">
+                <div class="card-header bg-transparent">
+                    <h5 class="card-title mb-0">Monthly Purchase</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="purchaseChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="card">
+                <div class="card-header bg-transparent">
+                    <h5 class="card-title mb-0">Monthly Sales</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="salesChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="card">
+                <div class="card-header bg-transparent">
+                    <h5 class="card-title mb-0">Stock Overview</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="stockChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity Tables -->
+    <div class="row g-4">
+        <div class="col-xl-6 col-lg-12">
+            <div class="card">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Latest Purchase</h5>
+                    <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>PO No.</th>
+                                    <th>Supplier</th>
+                                    <th>Date</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for po in latest_purchases %}
+                                <tr>
+                                    <td><span class="badge bg-primary">{{ po.po_no }}</span></td>
+                                    <td>{{ po.supplier }}</td>
+                                    <td>{{ po.date }}</td>
+                                    <td class="text-end">${{ po.amount }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="4" class="text-center text-muted">No recent purchases</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-12">
+            <div class="card">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Latest Receiving</h5>
+                    <a href="#" class="btn btn-sm btn-outline-success">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>GRN No.</th>
+                                    <th>Supplier</th>
+                                    <th>Date</th>
+                                    <th class="text-end">Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for grn in latest_receiving %}
+                                <tr>
+                                    <td><span class="badge bg-success">{{ grn.grn_no }}</span></td>
+                                    <td>{{ grn.supplier }}</td>
+                                    <td>{{ grn.date }}</td>
+                                    <td class="text-end">{{ grn.qty }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="4" class="text-center text-muted">No recent receipts</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-12">
+            <div class="card">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Latest Dispatch</h5>
+                    <a href="#" class="btn btn-sm btn-outline-warning">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Dispatch No.</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th class="text-end">Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for disp in latest_dispatch %}
+                                <tr>
+                                    <td><span class="badge bg-warning text-dark">{{ disp.dispatch_no }}</span></td>
+                                    <td>{{ disp.customer }}</td>
+                                    <td>{{ disp.date }}</td>
+                                    <td class="text-end">{{ disp.qty }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="4" class="text-center text-muted">No recent dispatches</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-12">
+            <div class="card">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Latest Sales</h5>
+                    <a href="#" class="btn btn-sm btn-outline-info">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Invoice No.</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for inv in latest_sales %}
+                                <tr>
+                                    <td><span class="badge bg-info">{{ inv.invoice_no }}</span></td>
+                                    <td>{{ inv.customer }}</td>
+                                    <td>{{ inv.date }}</td>
+                                    <td class="text-end">${{ inv.amount }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="4" class="text-center text-muted">No recent sales</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // === Monthly Purchase Chart (Bar) ===
+        const ctxPurchase = document.getElementById('purchaseChart').getContext('2d');
+        new Chart(ctxPurchase, {
+            type: 'bar',
+            data: {
+                labels: {{ month_labels|safe }},
+                datasets: [{
+                    label: 'Purchase (K)',
+                    data: {{ purchase_data|safe }},
+                    backgroundColor: 'rgba(108, 92, 231, 0.6)',
+                    borderColor: 'rgba(108, 92, 231, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#fff' } }
+                },
+                scales: {
+                    y: { ticks: { color: '#aaa' } },
+                    x: { ticks: { color: '#aaa' } }
+                }
+            }
+        });
+
+        // === Monthly Sales Chart (Line) ===
+        const ctxSales = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctxSales, {
+            type: 'line',
+            data: {
+                labels: {{ month_labels|safe }},
+                datasets: [{
+                    label: 'Sales (K)',
+                    data: {{ sales_data|safe }},
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    pointBackgroundColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#fff' } }
+                },
+                scales: {
+                    y: { ticks: { color: '#aaa' } },
+                    x: { ticks: { color: '#aaa' } }
+                }
+            }
+        });
+
+        // === Stock Overview Chart (Doughnut) ===
+        const ctxStock = document.getElementById('stockChart').getContext('2d');
+        new Chart(ctxStock, {
+            type: 'doughnut',
+            data: {
+                labels: {{ stock_labels|safe }},
+                datasets: [{
+                    data: {{ stock_values|safe }},
+                    backgroundColor: ['#f39c12', '#3498db', '#2ecc71'],
+                    borderColor: 'rgba(255,255,255,0.2)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#fff' } }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

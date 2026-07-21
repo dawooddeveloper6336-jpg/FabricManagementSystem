@@ -1,0 +1,691 @@
+/* ---------- Global ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background-attachment: fixed;
+    min-height: 100vh;
+    animation: gradientShift 15s ease infinite alternate;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ---------- Sidebar (Glass) ---------- */
+.sidebar {
+    width: 260px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: #fff;
+    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-brand {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-brand .brand-icon {
+    font-size: 2.2rem;
+    color: #a29bfe;
+}
+
+.sidebar-brand .brand-text {
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.75);
+    border-radius: 12px;
+    margin: 4px 12px;
+    padding: 10px 16px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.sidebar .nav-link i {
+    width: 24px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar .nav-link.text-danger:hover {
+    background: rgba(220, 53, 69, 0.25);
+    color: #ff6b6b;
+}
+
+/* ---------- Main Content ---------- */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px 0 20px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(4px);
+    border-radius: 32px 0 0 0;
+    margin: 16px 16px 0 0;
+}
+
+/* ---------- Navbar (Glass) ---------- */
+.navbar-glass {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-glass .navbar-brand {
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.navbar-glass .nav-link,
+.navbar-glass .dropdown-toggle {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.navbar-glass .btn-outline-danger {
+    color: #ff6b6b;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.navbar-glass .btn-outline-danger:hover {
+    background: rgba(220, 53, 69, 0.2);
+    color: #fff;
+    border-color: #ff6b6b;
+}
+
+.user-badge {
+    background: rgba(255, 255, 255, 0.12);
+    padding: 6px 14px;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 0.9rem;
+    backdrop-filter: blur(4px);
+}
+
+/* ---------- Summary Cards (Glass) ---------- */
+.card-dashboard {
+    background: rgba(255, 255, 255, 0.07) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.card-dashboard:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.card-dashboard .card-body {
+    padding: 24px 20px;
+}
+
+.card-dashboard h6 {
+    font-weight: 700 !important;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+.card-dashboard h2 {
+    font-weight: 700;
+    font-size: 2.2rem;
+    margin-top: 4px;
+}
+
+.card-dashboard .card-icon {
+    font-size: 2.5rem;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.card-dashboard:hover .card-icon {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* ---------- Other Cards (Tables, Charts) ---------- */
+.card {
+    background: rgba(255, 255, 255, 0.06) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px 20px;
+    border-radius: 20px 20px 0 0 !important;
+}
+
+.card-title {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.card-body {
+    padding: 16px 20px;
+}
+
+/* ---------- Tables ---------- */
+.table {
+    color: #f0f0f0 !important;
+}
+
+.table thead th {
+    border-top: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.table tbody td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.badge {
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 30px;
+}
+
+.btn-outline-primary,
+.btn-outline-success,
+.btn-outline-warning,
+.btn-outline-info {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-success:hover,
+.btn-outline-warning:hover,
+.btn-outline-info:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 16px 0;
+    margin-top: 20px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 991.98px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -280px;
+        height: 100vh;
+        z-index: 1050;
+        transition: left 0.3s ease;
+        width: 280px;
+    }
+
+    .sidebar.show {
+        left: 0;
+    }
+
+    .main-content {
+        margin: 0;
+        padding: 16px;
+        border-radius: 0;
+        background: transparent;
+    }
+
+    .navbar-glass {
+        border-radius: 16px;
+        padding: 8px 16px;
+    }
+
+    .card-dashboard h2 {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .card-dashboard .card-body {
+        padding: 16px;
+    }
+
+    .card-dashboard h2 {
+        font-size: 1.4rem;
+    }
+
+    .navbar-glass .navbar-brand span {
+        font-size: 0.9rem;
+    }
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ========================================================== */
+/*  MODAL OVERRIDE – FIXED                                    */
+/* ========================================================== */
+.modal {
+    z-index: 1060 !important;
+}
+
+.modal-backdrop {
+    z-index: 1050 !important;
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.modal-dialog {
+    z-index: 1061 !important;
+    pointer-events: auto !important;
+}
+
+.modal-content {
+    z-index: 1062 !important;
+    border-radius: 20px !important;
+    background: rgba(44, 62, 80, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    pointer-events: auto !important;
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+    pointer-events: auto !important;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.modal .btn-close {
+    filter: brightness(0) invert(1) !important;
+    pointer-events: auto !important;
+}
+
+.modal .btn {
+    pointer-events: auto !important;
+}
+
+.modal.show {
+    display: block !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.modal-backdrop.show {
+    opacity: 0.6 !important;
+}
+
+body.modal-open {
+    overflow: hidden !important;
+}
+
+/* ---------- ULTIMATE MODAL FIX (prevents backdrop blocking clicks) ---------- */
+.modal-backdrop {
+    pointer-events: none !important;
+    z-index: 1040 !important;
+}
+
+.modal-dialog {
+    pointer-events: auto !important;
+}
+
+.modal-content {
+    pointer-events: auto !important;
+    position: relative !important;
+}
+
+.modal-footer .btn,
+.modal-header .btn-close {
+    pointer-events: auto !important;
+}
+
+/* ========================================================== */
+/*  MOBILE SIDEBAR FIX – FORCE SLIDE & BACKGROUND             */
+/* ========================================================== */
+@media (max-width: 991.98px) {
+    .sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        height: 100vh !important;
+        z-index: 1050 !important;
+        transition: left 0.3s ease !important;
+        width: 280px !important;
+        background: rgba(44, 62, 80, 0.95) !important;   /* solid dark background */
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
+        overflow-y: auto !important;
+    }
+
+    .sidebar.show {
+        left: 0 !important;
+    }
+
+    /* Ensure main content doesn't overlap */
+    .main-content {
+        margin-left: 0 !important;
+        padding: 16px !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+    }
+
+    /* Navbar on mobile */
+    .navbar-glass {
+        border-radius: 16px !important;
+        padding: 8px 16px !important;
+        margin-bottom: 16px !important;
+    }
+}
+/* ========================================================== */
+/*  OFF CANVAS – GLASSMORPHISM STYLING                        */
+/* ========================================================== */
+.offcanvas {
+    background: rgba(44, 62, 80, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #fff !important;
+    width: 280px !important;
+}
+
+.offcanvas .nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 12px;
+    padding: 10px 16px;
+    transition: all 0.3s ease;
+}
+
+.offcanvas .nav-link:hover,
+.offcanvas .nav-link.active {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #fff !important;
+    transform: translateX(4px);
+}
+
+.offcanvas .nav-link.text-danger:hover {
+    background: rgba(220, 53, 69, 0.25) !important;
+    color: #ff6b6b !important;
+}
+
+.offcanvas .btn-close {
+    filter: brightness(0) invert(1) !important;
+}
+/* ========================================================== */
+/*  OFF CANVAS – GLASSMORPHISM (FORCE)                       */
+/* ========================================================== */
+.offcanvas.glass {
+    background: rgba(44, 62, 80, 0.85) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
+    width: 280px !important;
+    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Override any Bootstrap backgrounds */
+.offcanvas.glass .offcanvas-header,
+.offcanvas.glass .offcanvas-body {
+    background: transparent !important;
+}
+
+.offcanvas.glass .nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 12px !important;
+    padding: 10px 16px !important;
+    transition: all 0.3s ease !important;
+}
+
+.offcanvas.glass .nav-link:hover,
+.offcanvas.glass .nav-link.active {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #fff !important;
+    transform: translateX(4px);
+}
+
+.offcanvas.glass .nav-link.text-danger:hover {
+    background: rgba(220, 53, 69, 0.25) !important;
+    color: #ff6b6b !important;
+}
+
+.offcanvas.glass .btn-close {
+    filter: brightness(0) invert(1) !important;
+    opacity: 0.8 !important;
+}
+/* ========================================================== */
+/*  OFF CANVAS – PERMANENT SIDEBAR ON DESKTOP                */
+/* ========================================================== */
+@media (min-width: 992px) {
+    .offcanvas-start {
+        transform: none !important;
+        visibility: visible !important;
+        position: sticky !important;
+        top: 0 !important;
+        height: 100vh !important;
+        left: 0 !important;
+        width: 280px !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
+        box-shadow: none !important;
+        background: rgba(44, 62, 80, 0.85) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+    }
+
+    /* Hide the backdrop on desktop */
+    .offcanvas-backdrop {
+        display: none !important;
+    }
+
+    /* Adjust main content to make space for sidebar */
+    .main-content {
+        margin-left: 0 !important;
+        width: calc(100% - 280px) !important;
+        flex: 1 !important;
+    }
+
+    /* The wrapper already uses flex, so we need to keep sidebar and main side by side */
+    .wrapper {
+        display: flex !important;
+    }
+}
+
+/* On mobile, offcanvas slides in as usual */
+@media (max-width: 991.98px) {
+    .offcanvas-start {
+        transform: translateX(-100%) !important;
+        visibility: hidden !important;
+        position: fixed !important;
+    }
+    .offcanvas-start.show {
+        transform: translateX(0) !important;
+        visibility: visible !important;
+    }
+}
+/* ========================================================== */
+/*  OFF CANVAS – DASHBOARD THEME MATCH                        */
+/* ========================================================== */
+.offcanvas.glass-sidebar,
+.offcanvas {
+    background: rgba(44, 62, 80, 0.85) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #fff !important;
+    width: 280px !important;
+    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Header text & icon */
+.offcanvas .offcanvas-header .text-primary {
+    color: #a29bfe !important;
+}
+
+/* Nav links – same as sidebar */
+.offcanvas .nav-link {
+    color: rgba(255, 255, 255, 0.75) !important;
+    border-radius: 12px !important;
+    margin: 4px 12px !important;
+    padding: 10px 16px !important;
+    transition: all 0.3s ease !important;
+    font-weight: 500 !important;
+}
+
+.offcanvas .nav-link i {
+    width: 24px !important;
+    text-align: center !important;
+    font-size: 1.1rem !important;
+}
+
+.offcanvas .nav-link:hover,
+.offcanvas .nav-link.active {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #fff !important;
+    transform: translateX(4px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.offcanvas .nav-link.text-danger:hover {
+    background: rgba(220, 53, 69, 0.25) !important;
+    color: #ff6b6b !important;
+}
+
+/* Collapse sub‑menu indentation */
+.offcanvas .collapse .nav-link {
+    padding-left: 40px !important;
+    font-size: 0.95rem !important;
+}
+
+/* Scrollbar styling (match dashboard) */
+.offcanvas::-webkit-scrollbar {
+    width: 6px;
+}
+.offcanvas::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+.offcanvas::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+.offcanvas::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+/* ========================================================== */
+/*  OFF CANVAS – GLASS OVERRIDE (ULTIMATE)                    */
+/* ========================================================== */
+#offcanvasSidebar {
+    background: rgba(44, 62, 80, 0.88) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
+}
+
+#offcanvasSidebar .nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 12px !important;
+    padding: 10px 16px !important;
+}
+
+#offcanvasSidebar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #fff !important;
+}
+
+#offcanvasSidebar .nav-link.text-danger:hover {
+    background: rgba(220, 53, 69, 0.25) !important;
+    color: #ff6b6b !important;
+}
+/* ========================================================== */
+/*  OFF CANVAS – GLASS (GLOBAL FALLBACK)                      */
+/* ========================================================== */
+#offcanvasSidebar {
+    background: rgba(44, 62, 80, 0.85) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
+}

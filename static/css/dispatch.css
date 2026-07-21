@@ -1,0 +1,4 @@
+/* Additional styles for dispatch form */
+#spec-formset .table td {
+    vertical-align: middle;
+}

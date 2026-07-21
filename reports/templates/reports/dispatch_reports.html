@@ -1,0 +1,25 @@
+{% extends 'reports/base_report.html' %}
+
+{% block table_headers %}
+    <th>Dispatch No</th>
+    <th>Date</th>
+    <th>Fabric</th>
+    <th>Manufacturer</th>
+    <th>Qty</th>
+    <th>Status</th>
+{% endblock %}
+
+{% block table_body %}
+    {% for d in data %}
+    <tr>
+        <td>{{ d.dispatch_number }}</td>
+        <td>{{ d.dispatch_date|date:"Y-m-d" }}</td>
+        <td>{{ d.fabric.fabric_code }}</td>
+        <td>{{ d.manufacturer.manufacturer_name }}</td>
+        <td>{{ d.dispatch_quantity }}</td>
+        <td>{{ d.get_status_display }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6" class="text-center text-muted">No data found.</td></tr>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'reports/base_report.html' %}
+
+{% block table_headers %}
+    <th>Receiving No</th>
+    <th>Dispatch No</th>
+    <th>Color</th>
+    <th>Dispatch Qty</th>
+    <th>Grade A</th>
+    <th>Grade B</th>
+    <th>CP</th>
+    <th>Received Qty</th>
+    <th>Loss</th>
+    <th>Gain</th>
+    <th>Loss %</th>
+    <th>Gain %</th>
+{% endblock %}
+
+{% block table_body %}
+    {% for grade in data %}
+    <tr>
+        <td>{{ grade.receiving.receiving_number }}</td>
+        <td>{{ grade.receiving.dispatch.dispatch_number }}</td>
+        <td>{{ grade.color }}</td>
+        <td>{{ grade.dispatch_quantity }}</td>
+        <td>{{ grade.grade_a }}</td>
+        <td>{{ grade.grade_b }}</td>
+        <td>{{ grade.cp }}</td>
+        <td>{{ grade.received_qty }}</td>
+        <td>{{ grade.loss }}</td>
+        <td>{{ grade.gain }}</td>
+        <td>{{ grade.loss_percent|floatformat:2 }}%</td>
+        <td>{{ grade.gain_percent|floatformat:2 }}%</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="12" class="text-center text-muted">No data found.</td></tr>
+    {% endfor %}
+{% endblock %}

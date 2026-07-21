@@ -1,0 +1,59 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Edit User | Fabric Management{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="text-white">Edit User: {{ user.full_name }}</h4>
+    <a href="{% url 'accounts:user_list' %}" class="btn btn-outline-light">
+        <i class="bi bi-arrow-left me-1"></i> Back
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="id_full_name" class="form-label text-light">Full Name</label>
+                    {{ form.full_name }}
+                    {% if form.full_name.errors %}
+                        <div class="text-danger small">{{ form.full_name.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label for="id_email" class="form-label text-light">Email</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="text-danger small">{{ form.email.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label for="id_role" class="form-label text-light">Role</label>
+                    {{ form.role }}
+                </div>
+                <div class="col-md-6">
+                    <label for="id_status" class="form-label text-light">Status</label>
+                    {{ form.status }}
+                </div>
+                <div class="col-md-6">
+                    <label for="id_password" class="form-label text-light">New Password <small class="text-muted">(leave blank to keep current)</small></label>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                        <div class="text-danger small">{{ form.password.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-1"></i> Update
+                </button>
+                <a href="{% url 'accounts:user_list' %}" class="btn btn-outline-light">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Dispatch Form | Fabric Management{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/dispatch.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="text-white">{% if form.instance.pk %}Edit Dispatch{% else %}New Dispatch{% endif %}</h4>
+    <a href="{% url 'inventory:dispatch_list' %}" class="btn btn-outline-light">
+        <i class="bi bi-arrow-left me-1"></i> Back
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            <hr>
+            <h5 class="text-white">Specifications</h5>
+            <div id="spec-formset">
+                {{ spec_formset.management_form }}
+                <div class="table-responsive">
+                    <table class="table table-bordered text-white">
+                        <thead>
+                            <tr>
+                                <th>Specification Name</th>
+                                <th>Specification Value</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody id="spec-table-body">
+                            {% for form in spec_formset %}
+                            <tr class="spec-form-row">
+                                <td>{{ form.spec_name|as_crispy_field }}</td>
+                                <td>{{ form.spec_value|as_crispy_field }}</td>
+                                <td>
+                                    {% if form.instance.pk %}
+                                        {{ form.DELETE|as_crispy_field }}
+                                    {% else %}
+                                        <button type="button" class="btn btn-danger btn-sm remove-spec-row">Remove</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" class="btn btn-outline-light" id="add-spec-row">
+                    <i class="bi bi-plus-circle me-1"></i> Add Specification
+                </button>
+            </div>
+
+            <div class="mt-4 d-flex gap-2 flex-wrap">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-1"></i> Save
+                </button>
+                <button type="reset" class="btn btn-secondary">
+                    <i class="bi bi-arrow-counterclockwise me-1"></i> Clear
+                </button>
+                <a href="{% url 'inventory:dispatch_list' %}" class="btn btn-outline-light">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dispatch.js' %}"></script>
+{% endblock %}

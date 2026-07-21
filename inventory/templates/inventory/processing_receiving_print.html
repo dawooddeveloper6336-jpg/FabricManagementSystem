@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Receiving Slip</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding: 20px; }
+        .header { border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+        .title { font-size: 24px; font-weight: bold; }
+        .detail-row { margin-bottom: 8px; }
+        .label { font-weight: 600; }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="title">Fabric Management System</h1>
+                <p>Processing Receiving Slip</p>
+            </div>
+            <div>
+                <h3>{{ receiving.receiving_number }}</h3>
+                <p>Date: {{ receiving.receiving_date|date:"Y-m-d" }}</p>
+            </div>
+        </div>
+
+        <div class="row detail-row">
+            <div class="col-md-6"><span class="label">Dispatch No:</span> {{ receiving.dispatch.dispatch_number }}</div>
+            <div class="col-md-6"><span class="label">Dispatch Date:</span> {{ receiving.dispatch.dispatch_date|date:"Y-m-d" }}</div>
+        </div>
+        <div class="row detail-row">
+            <div class="col-md-6"><span class="label">Manufacturer:</span> {{ receiving.dispatch.manufacturer.manufacturer_name }}</div>
+            <div class="col-md-6"><span class="label">Fabric:</span> {{ receiving.dispatch.fabric.fabric_code }}</div>
+        </div>
+
+        <h5 class="mt-4">Grades</h5>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Color</th>
+                    <th>Dispatch Qty</th>
+                    <th>Grade A</th>
+                    <th>Grade B</th>
+                    <th>CP</th>
+                    <th>Received Qty</th>
+                    <th>Loss</th>
+                    <th>Gain</th>
+                    <th>Loss %</th>
+                    <th>Gain %</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for grade in receiving.grades.all %}
+                <tr>
+                    <td>{{ grade.color }}</td>
+                    <td>{{ grade.dispatch_quantity }}</td>
+                    <td>{{ grade.grade_a }}</td>
+                    <td>{{ grade.grade_b }}</td>
+                    <td>{{ grade.cp }}</td>
+                    <td>{{ grade.received_qty }}</td>
+                    <td>{{ grade.loss }}</td>
+                    <td>{{ grade.gain }}</td>
+                    <td>{{ grade.loss_percent|floatformat:2 }}%</td>
+                    <td>{{ grade.gain_percent|floatformat:2 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="5">Totals</th>
+                    <th>{{ receiving.total_received }}</th>
+                    <th>{{ receiving.total_loss }}</th>
+                    <th>{{ receiving.total_gain }}</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="mt-4 text-center">
+            <button class="btn btn-primary no-print" onclick="window.print()">Print</button>
+            <a href="{% url 'inventory:processing_receiving_list' %}" class="btn btn-secondary no-print">Back</a>
+        </div>
+    </div>
+</body>
+</html>

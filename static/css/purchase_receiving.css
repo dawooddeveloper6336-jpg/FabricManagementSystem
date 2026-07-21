@@ -1,0 +1,10 @@
+/* Purchase Receiving custom styles */
+#po-details {
+    background: rgba(255,255,255,0.1) !important;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    color: #fff !important;
+}
+#po-details .row div {
+    padding: 5px 0;
+}

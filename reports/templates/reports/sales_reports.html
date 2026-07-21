@@ -1,0 +1,23 @@
+{% extends 'reports/base_report.html' %}
+
+{% block table_headers %}
+    <th>Invoice No</th>
+    <th>Date</th>
+    <th>Customer</th>
+    <th>Total Amount</th>
+    <th>Created By</th>
+{% endblock %}
+
+{% block table_body %}
+    {% for inv in data %}
+    <tr>
+        <td>{{ inv.invoice_number }}</td>
+        <td>{{ inv.invoice_date|date:"Y-m-d" }}</td>
+        <td>{{ inv.customer_name }}</td>
+        <td>{{ inv.total_amount }}</td>
+        <td>{{ inv.created_by.username|default:"-" }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5" class="text-center text-muted">No data found.</td></tr>
+    {% endfor %}
+{% endblock %}

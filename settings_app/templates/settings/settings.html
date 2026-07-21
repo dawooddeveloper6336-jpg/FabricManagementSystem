@@ -1,0 +1,108 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Settings | Fabric Management{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/settings.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="text-white">Settings</h4>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Company Information</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" id="settingsForm">
+                    {% csrf_token %}
+                    {{ company_form|crispy }}
+                    <button type="submit" class="btn btn-primary mt-3">
+                        <i class="bi bi-save me-1"></i> Save
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Invoice Settings</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ invoice_form|crispy }}
+                    <button type="submit" class="btn btn-primary mt-3">
+                        <i class="bi bi-save me-1"></i> Save
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Appearance</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ appearance_form|crispy }}
+                    <button type="submit" class="btn btn-primary mt-3">
+                        <i class="bi bi-save me-1"></i> Save
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Database Backup</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'settings:backup' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-database me-1"></i> Create Backup
+                    </button>
+                    <a href="{% url 'settings:backup_history' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-clock-history me-1"></i> History
+                    </a>
+                    <a href="{% url 'settings:restore' %}" class="btn btn-outline-warning">
+                        <i class="bi bi-arrow-counterclockwise me-1"></i> Restore
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">System Information</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr><th>Software Version</th><td>{{ system_info.software_version }}</td></tr>
+                    <tr><th>Django Version</th><td>{{ system_info.django_version }}</td></tr>
+                    <tr><th>Python Version</th><td>{{ system_info.python_version }}</td></tr>
+                    <tr><th>Database Type</th><td>{{ system_info.database_type }}</td></tr>
+                    <tr><th>Database Name</th><td>{{ system_info.database_name }}</td></tr>
+                    <tr><th>Server Time</th><td>{{ system_info.server_time }}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
