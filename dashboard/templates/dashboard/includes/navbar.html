@@ -1,9 +1,9 @@
 <nav class="navbar navbar-glass">
     <div class="container-fluid">
-        <!-- Toggle button – with ID -->
-        <button class="btn btn-outline-light d-lg-none" type="button" id="sidebarToggle">
-            <i class="bi bi-list fs-4"></i>
-        </button>
+        <!-- Offcanvas toggle button -->
+        <button class="btn btn-outline-light d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+    <i class="bi bi-list fs-4"></i>
+</button>
 
         <!-- Brand -->
         <a class="navbar-brand d-flex align-items-center" href="#">
@@ -11,7 +11,7 @@
             <span class="fw-bold">Fabric Management</span>
         </a>
 
-        <!-- Right side: User dropdown -->
+        <!-- Right side: User dropdown (unchanged) -->
         <div class="ms-auto d-flex align-items-center">
             <div class="dropdown">
                 <button class="btn btn-link dropdown-toggle text-light text-decoration-none" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -27,17 +27,3 @@
         </div>
     </div>
 </nav>
-
-<!-- ✅ INLINE SCRIPT – Ensures toggle works on mobile even if dashboard.js fails -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var toggleBtn = document.getElementById('sidebarToggle');
-        var sidebar = document.getElementById('sidebarCollapse');
-        if (toggleBtn && sidebar) {
-            toggleBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                sidebar.classList.toggle('show');
-            });
-        }
-    });
-</script>
